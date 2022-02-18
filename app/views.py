@@ -7,16 +7,16 @@ def login(request):
     return render(request, 'login.html')
 
 def home(request):
-    if request.method =='POST':
-        if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password'],designation='Developer').exists():
+    if request.method == 'POST':
+        if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
             dev = user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
-            request.session['devdes'] = dev.designation
-            request.session['devdep'] = dev.department
             request.session['devfn'] = dev.fullname
-            return render(request, 'DEVsec.html', {'dev':dev})
+            request.session['devid'] = dev.id
+            return render(request, 'DEVsec.html', {'dev': dev})
         else:
-            context={'msg':'Invalid uname or password'}
-            return render(request,'login.html',context)
+            context = {'msg': 'Invalid uname or password'}
+            return render(request, 'login.html', context)
+
 
 def devindex(request):
     return render(request,'devindex.html')
@@ -30,10 +30,11 @@ def devdashboard(request):
         devfn = request.session['devfn']
     else:
         variable = "dummy"
-    dev = user_registration.objects.filter(designation=devdes).filter(fullname=devfn)
+    dev = user_registration.objects.filter(fullname=devfn)
     return render(request,'devdashboard.html', {'dev': dev})
 
 def devReportedissues(request):
+   
     return render(request,'devReportedissues.html')
 
 def devreportissue(request):
@@ -56,22 +57,25 @@ def devreportedissue(request):
     return render(request,'devreportedissue.html',{'var':var,'vars':vars})
 
 def devsuccess(request):
-    issue=request.POST.get("reportissue")
-    vars=reported_issue(issue=issue)
-    vars.save()
-    return render(request,'devsuccess.html')
+    
+    if request.session.has_key('devfn'):
+        devfn = request.session['devfn']
+        issue=request.POST.get("reportissue")
+        vars=reported_issue(issue=issue,reporter=devfn,reported_to=devfn)
+        vars.save()
+        return render(request,'devsuccess.html')
 
 def devissues(request):
     if request.session.has_key('devdes'):
         devdes = request.session['devdes']
-    if request.session.has_key('devdep'):
-        devdep = request.session['devdep']
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
     if request.session.has_key('devfn'):
         devfn = request.session['devfn']
     else:
         variable = "dummy"
     vars=user_registration.objects.filter(fullname=devfn)
-    var=reported_issue.objects.filter()
+    var=reported_issue.objects.filter(id=devid)
     return render(request,'devissues.html',{'vars':vars,'var':var})
 
 def devsample(request):
@@ -147,7 +151,7 @@ def tldashboard(request):
         usernameM2 = request.session['usernametl2']
     else:
         usernameM2 = "dummy"
-    mem = employees.objects.filter(designation=usernameM1).filter(fullname=usernameM2)
+    mem = user_registration.objects.filter(designation=usernameM1).filter(fullname=usernameM2)
     return render(request, 'TLdashboard.html')
 def tlprojects(request):
     return render(request, 'TLprojects.html')
