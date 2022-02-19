@@ -56,14 +56,28 @@ def devreportedissue(request):
     
     return render(request,'devreportedissue.html',{'var':var,'vars':vars})
 
-def devsuccess(request):
+# def devsuccess(request):
     
+            
+#     if request.method == 'POST':
+       
+#         issue=request.POST.get("reportissue")
+#         vars=reported_issue(issue=issue)
+#         vars.save()
+#     return render(request,'devsuccess.html')
+
+def devsuccess(request):
     if request.session.has_key('devfn'):
         devfn = request.session['devfn']
-        issue=request.POST.get("reportissue")
-        vars=reported_issue(issue=issue,reporter=devfn,reported_to=devfn)
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
+    else:
+        variable = "dummy"
+    if request.method == 'POST':
+        issue = request.POST.get("reportissue")
+        vars = reported_issue(issue=issue)
         vars.save()
-        return render(request,'devsuccess.html')
+    return render(request, 'devsuccess.html')
 
 def devissues(request):
     if request.session.has_key('devdes'):
@@ -75,7 +89,7 @@ def devissues(request):
     else:
         variable = "dummy"
     vars=user_registration.objects.filter(fullname=devfn)
-    var=reported_issue.objects.filter(id=devid)
+    var=reported_issue.objects.filter()
     return render(request,'devissues.html',{'vars':vars,'var':var})
 
 def devsample(request):

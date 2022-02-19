@@ -63,14 +63,10 @@
         </div>
         <div class="card">
           <div class="card-body ">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pharetra urna suscipit erat accumsan
-              varius. Mauris eu rutrum sem. Quisque nec placerat urna. Duis sed lectus quis sapien vestibulum aliquet
-              vulputate non lacus. Vivamus vestibulum nisl ac facilisis egestas. Donec ultrices leo nisl, nec luctus
-              enim rutrum rutrum. Morbi vitae accumsan neque. Curabitur eleifend tellus vehicula augue ullamcorper
-              posuere. Ut bibendum dolor at tellus congue, vitae faucibus nunc mollis. Aenean vestibulum, erat nec
-              semper imperdiet, magna tortor ullamcorper est, vitae condimentum turpis massa vitae nibh. Pellentesque a
-              diam fringilla, mollis justo quis, scelerisque turpis. Donec efficitur arcu magna, sed imperdiet justo
-              pretium vel. Sed molestie molestie consectetur.
+            {% for k in var %}
+            {{k.reply}}
+          {% endfor %}
+          
           </div>
         </div>
 

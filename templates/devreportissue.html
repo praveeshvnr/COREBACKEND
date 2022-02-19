@@ -1,11 +1,11 @@
-{%extends 'devindex.html'%}
+{% extends 'TLindex.html' %}
 {% load static %}
 
 {% block content %}
 
 <style>
     #head {
-        color: #fdfdf6;
+        color: #6c7293;
         font-size: 20px;
         font-weight: 600;
         margin-left: 0%;
@@ -13,51 +13,48 @@
         padding: 0.2% 1% 1.5% 1%;
         width: 79%;
     }
-    .card{
+    
+    .card {
         border-radius: 0.25rem;
-    }
-    #exampleTextarea1{
-        height: 30vh;
-        color: #667293;
-        border-color: #667293;
-    }
-    .btn {
-        padding: 11px;
-        margin-top: 2%;
-        float: right;
-        margin-right: 3%;
-        padding-left: 3%;
-        padding-right: 3%;
-        margin-bottom: 2%;
+        width: 100%;
+        padding: 0%;
     }
     
+    #exampleTextarea1{
+        height: 30vh;
+        color: white;
+    }
+    .btn {
+        margin-top: 4%;
+        float: right;
+        margin-right: 5%;
+        padding-left: 3%;
+        padding-right: 3%;
+        line-height: 2;
+       
+    }
+    .card-title1{
+        color: white;
+    }
 </style>
 
 <body>
 
-   <div class="row pt-3" style="background-color: black;">
-    <div class=" ml-5 " style="font-size: 20px;font-weight: 600;opacity: 0.9;color: #6c7293;">REPORT ISSUE</div></div>
-    <br>
-        <div class="card">
+    <div class="container-fluid" style="padding:0%">
+        <div><label id="head">REPORT ISSUE</label></div>
+
+        <div class="card " >
             <div class="card-body">
-              <h4 class="card-title" style="color: white;">Describe your issue</h4>
-              
-              <textarea style="color: white;" class="form-control" id="exampleTextarea1" name="reportissue" rows="4"></textarea>
-              
-                <div class="col-sm-5"></div>
-                <div class="col-sm-12" class="pull-right" >
-                    <a href="/app/devsuccess"><div class="row"></div>
-                    <button type="submit"  class="btn btn-primary " >
-                    <i class="mdi mdi-file-check btn-icon-prepend"></i>
-                    Submit
-                    </button>
-                </a>
-                </div>
-            </div>
+                <form action="devsuccess" method='post'>
+                    {% csrf_token %}
+                    <h4 class="card-title1">Describe your Issue</h4>
+                    <textarea class="form-control" id="exampleTextarea1" name="reportissue" rows="4"></textarea>
+                    <button type="submit" class="btn btn-primary ">Report</button>
+                </form>
             </div>
           </div>
     </div>
 </body>
 
 
-{% endblock content %}
+{% endblock %}
