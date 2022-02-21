@@ -1,6 +1,7 @@
 from django.http import request
 from django.shortcuts import render
 from .models import *
+from datetime import datetime
 
 # Create your views here.
 def login(request):
@@ -10,8 +11,10 @@ def home(request):
     if request.method == 'POST':
         if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
             dev = user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
+           
             request.session['devfn'] = dev.fullname
             request.session['devid'] = dev.id
+            
             return render(request, 'DEVsec.html', {'dev': dev})
         else:
             context = {'msg': 'Invalid uname or password'}
@@ -66,31 +69,64 @@ def devreportedissue(request):
 #         vars.save()
 #     return render(request,'devsuccess.html')
 
-def devsuccess(request):
-    # if request.session.has_key('devfn'):
-    #     devfn = request.session['devfn']
-    # if request.session.has_key('devid'):
-    #     devid = request.session['devid']
-    # else:
-    #     variable = "dummy"
-    if request.method == 'POST':
-        issue = request.POST.get("reportissue")
-        vars = reported_issue(issue=issue)
-        vars.save()
-    return render(request, 'devsuccess.html')
+# def devsuccess(request):
+#     # if request.session.has_key('devfn'):
+#     #     devfn = request.session['devfn']
+#     # if request.session.has_key('devid'):
+#     #     devid = request.session['devid']
+#     # else:
+#     #     variable = "dummy"
+#     if request.method == 'POST':
+#         issue = request.POST.get("reportissue")
+#         vars = reported_issue(issue=issue)
+#         vars.save()
+#     return render(request, 'devsuccess.html')
 
-def devissues(request):
-    
+def devsuccess(request):
     if request.session.has_key('devid'):
         devid = request.session['devid']
-    if request.session.has_key('devfn'):
-        devfn = request.session['devfn']
-    else:
-        variable = "dummy"
-   
-    vars=user_registration.objects.filter(fullname=devfn)
-    var=reported_issue.objects.filter(reported_to=devid)
-    return render(request,'devissues.html',{'vars':vars,'var':var})
+    
+    mem = user_registration.objects.filter(id=devid)
+    
+    
+    
+    
+    if request.method == 'POST':
+        
+        vars = reported_issue()
+        vars.issue=request.POST.get('reportissue')
+        vars.reported_date=datetime.now()
+        vars.reported_to_id=1
+        vars.reporter_id=devid
+        vars.status='pending'
+        vars.save()
+    return render(request,'devsuccess.html',{'mem':mem})
+
+# def devissues(request):
+     
+#     if request.session.has_key('devid'):
+#         devid = request.session['devid']
+#     if request.session.has_key('devfn'):
+#         devfn = request.session['devfn']
+#     if request.session.has_key('repid'):
+#         repid = request.session['repid']
+#     else:
+#         variable = "dummy"
+    
+#     vars=user_registration.objects.filter(fullname=devfn)
+#     var=reported_issue.objects.filter( reported_to=devid)
+#     return render(request,'devissues.html',{'vars':vars,'var':var})
+def devissues(request):
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
+    rid=request.GET.get('rid')
+    var=reported_issue.objects.filter(id=rid)
+    mem = user_registration.objects.filter(id=devid)
+
+    return render(request, 'devissues.html',{'mem':mem,'var':var})
+
+
+
 
 def devsample(request):
     return render(request,'devsample.html')
