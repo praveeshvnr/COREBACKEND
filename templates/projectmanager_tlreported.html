@@ -97,9 +97,11 @@
 
                             </tr>
                         </thead>
+                        {% for i in var %}
+
                         <tbody>
-                            
-                            <tr>
+
+                            <!-- <tr>
 
                                 <td>1</td>
                                 <td>anil</td>
@@ -113,35 +115,51 @@
                                         </div>
 
                                     </a>
-                                    <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <a href="#">
                                         <div class="badge badge-outline-danger" style="width: 105px;">
                                             <i class="text-danger mdi mdi-playlist-remove"></i>&nbsp; Un-Verified
                                         </div>
-                                    </a> -->
+                                    </a>  
 
                                 </td>
 
-                            </tr>
-                            {% for i in var%}
+                            </tr>  -->
+
                             <tr>
                                 <td> {{i.id}}</td>
-                                {% for j in vars%}
-                                <td> {{j.fullname}}</td>
-                                <td> {{j.designation}} </td>
-                                {% endfor %}
+
+                                <td> {{i.reporter}}</td>
+                                <td> {{i.reporter.designation}} </td>
+
                                 <td> {{i.reported_date}}</td>
 
-                                <td><a href="projectmanagerreportedissue3?rid={{i.id}}">
+
+                                <td>
+                                    {% if not i.reply %}
+                                    <a href="#">
+                                        <div class="btn btn-outline-warning" data-toggle="modal"
+                                            data-target="#myModal{{i.id}}">
+                                            <i class=" text-warning mdi mdi-send btn-icon-prepend"></i>Reply
+                                        </div>
+
+                                    </a>
+                                    {% else %}
+
+
+                                    <a href="{% url 'projectmanagerreportedissue3' i.id %}">
                                         <div class="badge badge-outline-success" style="width: 105px;">
                                             <i class="text-success mdi mdi-playlist-check"></i>&nbsp;Verified
                                         </div>
                                     </a>
+                                    {% endif %}
                                 </td>
-                            <tr>
-                                {% endfor %}
-                            
+                            </tr>
+
+
                         </tbody>
+
+                        {% endfor %}
                     </table>
                 </div>
             </div>
@@ -149,75 +167,86 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal" id="myModal">
+{% for i in var %}
+<div class="modal" id="myModal{{i.id}}">
     <div class="modal-dialog">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 grid-margin stretch-card bg-dark text-light modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">Reply</h4>
-                <button type="button" style="color: white; border: none;background-color: transparent;" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" style="color: white; border: none;background-color: transparent;" class="close"
+                    data-dismiss="modal">&times;</button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form action="">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row p-3">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
-                            <textarea class="col-12 col-sm-12 col-md-12 col-lg-12 form-control  text-light"
-                                style="height: 200px; background-color: #2A3038; " rows="4"></textarea>
+                <form action="{% url 'projectreply' i.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row p-3">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
+                                    <textarea class="col-12 col-sm-12 col-md-12 col-lg-12 form-control  text-light"
+                                        style="height: 200px; background-color: #2A3038; " name="reply" rows="4"> </textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center pb-3">
+                                <button type="submit" onclick="redirect()"
+                                    class="btn btn-outline-primary btn-icon-text ">
+                                    <i class="text-primary mdi mdi-send btn-icon-prepend"></i>
+                                    Send
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <br>
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center pb-3">
-                        <button type="submit" onclick="redirect()" class="btn btn-outline-primary btn-icon-text ">
-                            <i class="text-primary mdi mdi-send btn-icon-prepend"></i>
-                            Send
-                        </button>
-                    </div>
-                </div>
+
+                </form>
+
             </div>
-        </form>
+        </div>
+        </div>
+        </div>
 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <!-- modal end -->
+        {% endfor%}
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <!-- modal end -->
 
-                <script>
+            <script>
 
-                    //js for submit button in new_team.html page
-                    function redirect() {
-                        window.location.href = "projectmanager_tlreported";
-                    }
+                //js for submit button in new_team.html page
+                function redirect() {
+                    window.location.href = "projectmanager_tlreported";
+                }
 
-                    function myFunction() {
-                        // Declare variables
-                        var input, filter, table, tr, td, i, txtValue;
-                        input = document.getElementById("myInput");
-                        filter = input.value.toUpperCase();
-                        table = document.getElementById("myTable");
-                        tr = table.getElementsByTagName("tr");
+                function myFunction() {
+                    // Declare variables
+                    var input, filter, table, tr, td, i, txtValue;
+                    input = document.getElementById("myInput");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("myTable");
+                    tr = table.getElementsByTagName("tr");
 
-                        // Loop through all table rows, and hide those who don't match the search query
-                        for (i = 0; i < tr.length; i++) {
-                            td = tr[i].getElementsByTagName("td")[1];
-                            if (td) {
-                                txtValue = td.textContent || td.innerText;
-                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                    tr[i].style.display = "";
-                                } else {
-                                    tr[i].style.display = "none";
-                                }
+                    // Loop through all table rows, and hide those who don't match the search query
+                    for (i = 0; i < tr.length; i++) {
+                        td = tr[i].getElementsByTagName("td")[1];
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                            } else {
+                                tr[i].style.display = "none";
                             }
                         }
                     }
-                </script>
-                <!-- modal js -->
-                <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-                <!-- endmodal -->
+                }
+            </script>
+            <!-- modal js -->
+            <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- endmodal -->
 
-                {% endblock %}
+            {% endblock %}

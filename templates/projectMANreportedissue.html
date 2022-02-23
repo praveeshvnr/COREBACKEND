@@ -103,15 +103,33 @@
                             <tr>
 
                                 <td>{{d.id}}</td>
-                                {% for j in vars %}
-                                <td>{{j.fullname}}</td>
-                                <td>{{j.designation}}</td>
-                                {% endfor %}
+                                
+                                <td>{{d.reporter}}</td>
+                                <td>{{d.reporter.designation}}</td>
+                                
                                 <td> {{d.reported_date}}</td>
+                               
+                                <td>
+                                    {% if not d.reply %}
+                                    <a href="#">
+                                    <div class="btn btn-outline-warning" data-toggle="modal" data-target="#myModal">
+                                        <i class=" text-warning mdi mdi-send btn-icon-prepend"></i>Pending
+                                    </div>
 
-                                <td><a href="projectmanagerreportedissue2?rid={{d.id}}">
+                                    </a>
+                                    {% else %}
+                                    
+                                    
+                                    <a href="{% url 'projectmanagerreportedissue2' d.id %}">
                                         <div class="badge badge-outline-success">Submitted</div>
                                     </a>
+                                    {% endif %}
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                 </td>
 
                             </tr>
@@ -126,6 +144,38 @@
         </div>
     </div>
 </div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 grid-margin stretch-card bg-dark text-light modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Reply</h4>
+                <button type="button" style="color: white; border: none;background-color: transparent;" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form action="projectreply">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row p-3">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center">
+                            <textarea class="col-12 col-sm-12 col-md-12 col-lg-12 form-control  text-light"
+                                style="height: 200px; background-color: #2A3038; " name="reply" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 d-flex justify-content-center pb-3">
+                        <button type="submit" onclick="redirect()" class="btn btn-outline-primary btn-icon-text ">
+                            <i class="text-primary mdi mdi-send btn-icon-prepend"></i>
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
 
 <script>
     function myFunction() {

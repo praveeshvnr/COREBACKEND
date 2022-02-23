@@ -102,8 +102,8 @@ urlpatterns = [
     re_path(r'^projectMANreportedissues$', views.projectMANreportedissues, name='projectMANreportedissues'),
     re_path(r'^projectMANreportedissue$', views.projectMANreportedissue, name='projectMANreportedissue'),
     re_path(r'^projectMANreportissue$', views.projectMANreportissue, name='projectMANreportissue'),
-    re_path(r'^projectmanagerreportedissue2$', views.projectmanagerreportedissue2, name='projectmanagerreportedissue2'),
-    re_path(r'^projectmanagerreportedissue3$', views.projectmanagerreportedissue3, name='projectmanagerreportedissue3'),
+    re_path(r'^projectmanagerreportedissue2/(?P<id>\d+)/$', views.projectmanagerreportedissue2, name='projectmanagerreportedissue2'),
+    re_path(r'^projectmanagerreportedissue3/(?P<id>\d+)/$', views.projectmanagerreportedissue3, name='projectmanagerreportedissue3'),
     re_path(r'^MANreportsuccess$', views.MANreportsuccess, name='MANreportsuccess'),
     re_path(r'^projectMANleave$', views.projectMANleave, name='projectMANleave'),
     re_path(r'^projectMANleavereq$', views.projectMANleavereq, name='projectMANleavereq'),
@@ -127,6 +127,7 @@ urlpatterns = [
     re_path(r'^projectmanager_currenttl$', views.projectmanager_currenttl, name='projectmanager_currenttl'),
     re_path(r'^projectmanager_completetl$', views.projectmanager_completetl, name='projectmanager_completetl'),
     re_path(r'^projectmanager_tlreported$', views.projectmanager_tlreported, name='projectmanager_tlreported'), 
+    re_path(r'^projectreply/(?P<id>\d+)/$', views.projectreply, name='projectreply'), 
 
 
 ]

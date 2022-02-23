@@ -1,5 +1,5 @@
 from django.http import request
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import *
 from datetime import datetime
 
@@ -291,32 +291,32 @@ def projectMANreportedissue(request):
         devdes = request.session['devdes']
     if request.session.has_key('devdep'):
         devdep = request.session['devdep']
-    if request.session.has_key('devfn'):
-        devfn = request.session['devfn']
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
     else:
         variable = "dummy"
-    var=reported_issue.objects.all()
-    vars=user_registration.objects.filter(fullname=devfn)
-    return render(request, 'projectMANreportedissue.html',{'var':var,'vars':vars})
+    var=reported_issue.objects.filter(reporter=devid)
+   
+    return render(request, 'projectMANreportedissue.html',{'var':var})
 
 def projectMANreportissue(request):
     return render(request, 'projectMANreportissue.html')
 
-def projectmanagerreportedissue2(request):
+def projectmanagerreportedissue2(request,id):
      if request.session.has_key('devid'):
         devid = request.session['devid']
      rid=request.GET.get('rid')
-     var=reported_issue.objects.filter(id=rid)
-     mem = user_registration.objects.filter(id=devid)
-     return render(request, 'projectmanagerreportedissue2.html',{'var':var,'mem':mem})
+     var=reported_issue.objects.filter(id=id)
+     
+     return render(request, 'projectmanagerreportedissue2.html',{'var':var})
 
-def projectmanagerreportedissue3(request):
+def projectmanagerreportedissue3(request,id):
      if request.session.has_key('devid'):
         devid = request.session['devid']
      rid=request.GET.get('rid')
-     var=reported_issue.objects.filter(reporter_id=2)
-     mem = user_registration.objects.filter(id=devid)
-     return render(request, 'projectmanagerreportedissue2.html',{'var':var,'mem':mem})
+     var=reported_issue.objects.filter(id=id)
+    
+     return render(request, 'projectmanagerreportedissue2.html',{'var':var})
 
 
 def MANreportsuccess(request):
@@ -394,12 +394,26 @@ def projectmanager_completetl(request):
 def projectmanager_tlreported(request):
     if request.session.has_key('devid'):
         devid = request.session['devid']
-    if request.session.has_key('desid'):
-        desid = request.session['desid']
-    if request.session.has_key('devfn'):
-        devfn = request.session['devfn']
+   
     else:
         variable = "dummy"
-    var=reported_issue.objects.filter(reporter_id=2)
-    vars=user_registration.objects.filter(designation_id=2)
-    return render(request, 'projectmanager_tlreported.html',{'var':var,'vars':vars})
+    
+    var=reported_issue.objects.filter(reported_to_id=devid)
+    # vars=user_registration.objects.filter(designation_id=2).filter(id=devid)
+    return render(request, 'projectmanager_tlreported.html',{'var':var})
+
+
+
+def projectreply(request,id):
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
+    
+    if request.method == 'POST':
+        
+        vars = reported_issue.objects.get(id=id)
+        vars.reply=request.POST.get('reply')
+       
+       
+        
+        vars.save()
+    return redirect('projectmanager_tlreported')
