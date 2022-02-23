@@ -14,6 +14,7 @@ def home(request):
            
             request.session['devfn'] = dev.fullname
             request.session['devid'] = dev.id
+            request.session['desid'] = dev.designation_id
             
             return render(request, 'DEVsec.html', {'dev': dev})
         else:
@@ -59,28 +60,7 @@ def devreportedissue(request):
     
     return render(request,'devreportedissue.html',{'var':var,'vars':vars})
 
-# def devsuccess(request):
-    
-            
-#     if request.method == 'POST':
-       
-#         issue=request.POST.get("reportissue")
-#         vars=reported_issue(issue=issue)
-#         vars.save()
-#     return render(request,'devsuccess.html')
 
-# def devsuccess(request):
-#     # if request.session.has_key('devfn'):
-#     #     devfn = request.session['devfn']
-#     # if request.session.has_key('devid'):
-#     #     devid = request.session['devid']
-#     # else:
-#     #     variable = "dummy"
-#     if request.method == 'POST':
-#         issue = request.POST.get("reportissue")
-#         vars = reported_issue(issue=issue)
-#         vars.save()
-#     return render(request, 'devsuccess.html')
 
 def devsuccess(request):
     if request.session.has_key('devid'):
@@ -102,20 +82,7 @@ def devsuccess(request):
         vars.save()
     return render(request,'devsuccess.html',{'mem':mem})
 
-# def devissues(request):
-     
-#     if request.session.has_key('devid'):
-#         devid = request.session['devid']
-#     if request.session.has_key('devfn'):
-#         devfn = request.session['devfn']
-#     if request.session.has_key('repid'):
-#         repid = request.session['repid']
-#     else:
-#         variable = "dummy"
-    
-#     vars=user_registration.objects.filter(fullname=devfn)
-#     var=reported_issue.objects.filter( reported_to=devid)
-#     return render(request,'devissues.html',{'vars':vars,'var':var})
+
 def devissues(request):
     if request.session.has_key('devid'):
         devid = request.session['devid']
@@ -320,16 +287,57 @@ def projectMANreportedissues(request):
     return render(request, 'projectMANreportedissues.html')
 
 def projectMANreportedissue(request):
-    return render(request, 'projectMANreportedissue.html')
+    if request.session.has_key('devdes'):
+        devdes = request.session['devdes']
+    if request.session.has_key('devdep'):
+        devdep = request.session['devdep']
+    if request.session.has_key('devfn'):
+        devfn = request.session['devfn']
+    else:
+        variable = "dummy"
+    var=reported_issue.objects.all()
+    vars=user_registration.objects.filter(fullname=devfn)
+    return render(request, 'projectMANreportedissue.html',{'var':var,'vars':vars})
 
 def projectMANreportissue(request):
     return render(request, 'projectMANreportissue.html')
 
 def projectmanagerreportedissue2(request):
-    return render(request, 'projectmanagerreportedissue2.html')
+     if request.session.has_key('devid'):
+        devid = request.session['devid']
+     rid=request.GET.get('rid')
+     var=reported_issue.objects.filter(id=rid)
+     mem = user_registration.objects.filter(id=devid)
+     return render(request, 'projectmanagerreportedissue2.html',{'var':var,'mem':mem})
+
+def projectmanagerreportedissue3(request):
+     if request.session.has_key('devid'):
+        devid = request.session['devid']
+     rid=request.GET.get('rid')
+     var=reported_issue.objects.filter(id=rid)
+     mem = user_registration.objects.filter(id=devid)
+     return render(request, 'projectmanagerreportedissue2.html',{'var':var,'mem':mem})
+
 
 def MANreportsuccess(request):
-    return render(request, 'MANreportsuccess.html')
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
+    
+    mem = user_registration.objects.filter(id=devid)
+    
+    
+    
+    
+    if request.method == 'POST':
+        
+        vars = reported_issue()
+        vars.issue=request.POST.get('MANreportissue')
+        vars.reported_date=datetime.now()
+        vars.reported_to_id=1
+        vars.reporter_id=devid
+        vars.status='pending'
+        vars.save()
+    return render(request, 'MANreportsuccess.html',{'mem':mem})
 
 def projectMANleave(request):
     return render(request, 'projectMANleave.html')
@@ -384,4 +392,14 @@ def projectmanager_completetl(request):
     return render(request, 'projectmanager_completetl.html')
 
 def projectmanager_tlreported(request):
-    return render(request, 'projectmanager_tlreported.html')
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
+    if request.session.has_key('desid'):
+        desid = request.session['desid']
+    if request.session.has_key('devfn'):
+        devfn = request.session['devfn']
+    else:
+        variable = "dummy"
+    var=reported_issue.objects.all()
+    vars=user_registration.objects.filter(id=devid)
+    return render(request, 'projectmanager_tlreported.html',{'var':var,'vars':vars})

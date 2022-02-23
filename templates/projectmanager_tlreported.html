@@ -98,7 +98,7 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            
                             <tr>
 
                                 <td>1</td>
@@ -123,60 +123,24 @@
                                 </td>
 
                             </tr>
-
+                            {% for i in var%}
                             <tr>
-                                <td> 2 </td>
-                                <td> jain </td>
-                                <td> Tester </td>
-                                <td> 8/8/2022</td>
+                                <td> {{i.id}}</td>
+                                {% for j in vars%}
+                                <td> {{j.fullname}}</td>
+                                <td> {{j.designation}} </td>
+                                {% endfor %}
+                                <td> {{i.reported_date}}</td>
 
-                                <td><a href="{% url 'projectmanagerreportedissue2'%}">
+                                <td><a href="projectmanagerreportedissue3?rid={{i.id}}">
                                         <div class="badge badge-outline-success" style="width: 105px;">
                                             <i class="text-success mdi mdi-playlist-check"></i>&nbsp;Verified
                                         </div>
                                     </a>
                                 </td>
                             <tr>
-                            <tr>
-                                <td> 3 </td>
-                                <td> robert </td>
-                                <td> tl </td>
-                                <td> 09/12/2022</td>
-
-                                <td><a href="{% url 'projectmanagerreportedissue2'%}">
-                                        <div class="badge badge-outline-success" style="width: 105px;">
-                                            <i class="text-success mdi mdi-playlist-check"></i>&nbsp;Verified
-                                        </div>
-                                    </a>
-                                </td>
-                            <tr>
-                            <tr>
-                                <td> 4 </td>
-                                <td> barton</td>
-                                <td> developer </td>
-                                <td> 1/10/2022</td>
-
-                                <td><a href="{% url 'projectmanagerreportedissue2'%}">
-                                        <div class="badge badge-outline-success" style="width: 105px;">
-                                            <i class="text-success mdi mdi-playlist-check"></i>&nbsp;Verified
-                                        </div>
-
-                                    </a>
-                                </td>
-                            <tr>
-                            <tr>
-                                <td> 5 </td>
-                                <td> stark </td>
-                                <td> developer </td>
-                                <td> 11/3/2022</td>
-
-                                <td><a href="{% url 'projectmanagerreportedissue2'%}">
-                                        <div class="badge badge-outline-success" style="width: 105px;">
-                                            <i class="text-success mdi mdi-playlist-check"></i>&nbsp;Verified
-                                        </div>
-                                    </a>
-                                </td>
-                            <tr>
+                                {% endfor %}
+                            
                         </tbody>
                     </table>
                 </div>
@@ -197,7 +161,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-
+                <form action="">
                 <div class="card">
                     <div class="card-body">
                         <div class="row p-3">
@@ -215,6 +179,7 @@
                     </div>
                 </div>
             </div>
+        </form>
 
             <!-- Modal footer -->
             <div class="modal-footer">

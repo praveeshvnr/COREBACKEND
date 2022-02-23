@@ -103,6 +103,7 @@ urlpatterns = [
     re_path(r'^projectMANreportedissue$', views.projectMANreportedissue, name='projectMANreportedissue'),
     re_path(r'^projectMANreportissue$', views.projectMANreportissue, name='projectMANreportissue'),
     re_path(r'^projectmanagerreportedissue2$', views.projectmanagerreportedissue2, name='projectmanagerreportedissue2'),
+    re_path(r'^projectmanagerreportedissue3$', views.projectmanagerreportedissue3, name='projectmanagerreportedissue3'),
     re_path(r'^MANreportsuccess$', views.MANreportsuccess, name='MANreportsuccess'),
     re_path(r'^projectMANleave$', views.projectMANleave, name='projectMANleave'),
     re_path(r'^projectMANleavereq$', views.projectMANleavereq, name='projectMANleavereq'),

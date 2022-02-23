@@ -56,22 +56,18 @@
 
     <div id="" class="container shadow mt-3  " style="border-radius:5px;background-color: #191c24; ">
       <div class="row p-3">
-        <div class="col-12">
+        <div class="col-12">{% for j in mem %}
           <img src="{% static 'circle.png'%}" width="30" height="25"><span class=""
-            style="color: white; font-size: 18px;font-weight: 400;padding-left: 20px;">issue reported by shajeer vu
+            style="color: white; font-size: 18px;font-weight: 400;padding-left: 20px;">issue reported by {{j.fullname}}
+            {% endfor %}
         </div>
       </div>
       <div class="col-12">
         <div class="card p-0 text-justify" style="border:none !important" >
           <div class="card-body text-justify " style="padding-top:30px;padding-left:0%;padding-right:0%;">
-             <p style="font-size:14px;text-align:justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pharetra urna suscipit erat accumsan
-              varius. Mauris eu rutrum sem. Quisque nec placerat urna. Duis sed lectus quis sapien vestibulum aliquet
-              vulputate non lacus. Vivamus vestibulum nisl ac facilisis egestas. Donec ultrices leo nisl, nec luctus enim
-              rutrum rutrum. Morbi vitae accumsan neque. Curabitur eleifend tellus vehicula augue ullamcorper posuere. Ut
-              bibendum dolor at tellus congue, vitae faucibus nunc mollis. Aenean vestibulum, erat nec semper imperdiet,
-              magna tortor ullamcorper est, vitae condimentum turpis massa vitae nibh. Pellentesque a diam fringilla,
-              mollis justo quis, scelerisque turpis. Donec efficitur arcu magna, sed imperdiet justo pretium vel. Sed
-              molestie molestie consectetur.</p>
+            {% for i in var %}
+             <p style="font-size:14px;text-align:justify">{{i.issue}}</p>
+             {% endfor %}
           </div>
         </div>
       </div>
