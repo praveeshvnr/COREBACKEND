@@ -47,18 +47,16 @@ def devreportissue(request):
 
 def devreportedissue(request):
     
-    if request.session.has_key('devdes'):
-        devdes = request.session['devdes']
-    if request.session.has_key('devdep'):
-        devdep = request.session['devdep']
-    if request.session.has_key('devfn'):
-        devfn = request.session['devfn']
+    if request.session.has_key('devid'):
+        devid = request.session['devid']
+   
     else:
         variable = "dummy"
-    var=reported_issue.objects.all()
-    vars=user_registration.objects.filter(fullname=devfn)
     
-    return render(request,'devreportedissue.html',{'var':var,'vars':vars})
+    var=reported_issue.objects.filter(reporter_id=devid)
+    # vars=user_registration.objects.filter(fullname=devfn)
+    
+    return render(request,'devreportedissue.html',{'var':var})
 
 
 
