@@ -314,7 +314,7 @@ def projectmanagerreportedissue3(request):
      if request.session.has_key('devid'):
         devid = request.session['devid']
      rid=request.GET.get('rid')
-     var=reported_issue.objects.filter(id=rid)
+     var=reported_issue.objects.filter(reporter_id=2)
      mem = user_registration.objects.filter(id=devid)
      return render(request, 'projectmanagerreportedissue2.html',{'var':var,'mem':mem})
 
@@ -400,6 +400,6 @@ def projectmanager_tlreported(request):
         devfn = request.session['devfn']
     else:
         variable = "dummy"
-    var=reported_issue.objects.all()
-    vars=user_registration.objects.filter(id=devid)
+    var=reported_issue.objects.filter(reporter_id=2)
+    vars=user_registration.objects.filter(designation_id=2)
     return render(request, 'projectmanager_tlreported.html',{'var':var,'vars':vars})
