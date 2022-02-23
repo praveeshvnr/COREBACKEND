@@ -11,7 +11,7 @@ urlpatterns = [
     re_path(r'^devreportissue$', views.devreportissue, name='devreportissue'),
     re_path(r'^devreportedissue$', views.devreportedissue, name='devreportedissue'),
     re_path(r'^devsuccess$', views.devsuccess, name='devsuccess'),
-    re_path(r'^devissues$', views.devissues, name='devissues'),
+    re_path(r'^devissues/(?P<id>\d+)/$', views.devissues, name='devissues'),
     
 
 

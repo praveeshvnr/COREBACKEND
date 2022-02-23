@@ -85,10 +85,11 @@
                     <td> {{d.reporter.designation}}</td>
                     
                     <td> {{d.reported_date}}</td>
-                    <td><a href="devissues?rid={{d.id}}">
+                    
+                    <td><a href="{% url 'devissues' d.id %}">
                       <div class="badge badge-outline-success">Submitted</div></a>
                     </td>
-                  
+                    
                 </tr>
   
                 

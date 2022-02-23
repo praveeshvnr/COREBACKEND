@@ -81,14 +81,14 @@ def devsuccess(request):
     return render(request,'devsuccess.html',{'mem':mem})
 
 
-def devissues(request):
+def devissues(request,id):
     if request.session.has_key('devid'):
         devid = request.session['devid']
     rid=request.GET.get('rid')
-    var=reported_issue.objects.filter(id=rid)
-    mem = user_registration.objects.filter(id=devid)
+    var=reported_issue.objects.filter(id=id)
+    # mem = user_registration.objects.filter(id=devid)
 
-    return render(request, 'devissues.html',{'mem':mem,'var':var})
+    return render(request, 'devissues.html',{'var':var})
 
 
 
