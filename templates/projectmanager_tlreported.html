@@ -97,8 +97,9 @@
 
                             </tr>
                         </thead>
+                        {% for vars in vars %}
                         {% for i in var %}
-
+                        {% if vars.id == i.reporter_id %}
                         <tbody>
 
                             <!-- <tr>
@@ -157,7 +158,8 @@
 
 
                         </tbody>
-
+                        {% endif %}
+                        {% endfor %}
                         {% endfor %}
                     </table>
                 </div>

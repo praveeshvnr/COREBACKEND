@@ -1,3 +1,4 @@
+
 from django.http import request
 from django.shortcuts import redirect, render
 from .models import *
@@ -494,10 +495,10 @@ def projectmanager_tlreported(request):
     
         else:
             variable = "dummy"
-        
+        vars=user_registration.objects.filter(designation=2)
         var=reported_issue.objects.filter(reported_to_id=prid)
         # vars=user_registration.objects.filter(designation_id=2).filter(id=devid)
-        return render(request, 'projectmanager_tlreported.html',{'var':var})
+        return render(request, 'projectmanager_tlreported.html',{'var':var,'vars':vars})
     else:
         return redirect('/')
 
@@ -511,9 +512,6 @@ def projectreply(request,id):
             
             vars = reported_issue.objects.get(id=id)
             vars.reply=request.POST.get('reply')
-        
-        
-            
             vars.save()
         return redirect('projectmanager_tlreported')
     else:
