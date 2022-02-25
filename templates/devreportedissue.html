@@ -86,8 +86,27 @@
                     
                     <td> {{d.reported_date}}</td>
                     
-                    <td><a href="{% url 'devissues' d.id %}">
-                      <div class="badge badge-outline-success">Submitted</div></a>
+                    <td>
+                      {% if not d.reply %}
+                      <a href="#">
+                      <div class="btn btn-outline-warning" data-toggle="modal" >
+                          <i class=" text-warning mdi mdi-send btn-icon-prepend"></i>Pending
+                      </div>
+
+                      </a>
+                      {% else %}
+                      
+                      
+                      <a href="{% url 'devissues' d.id %}">
+                        <div class="badge badge-outline-success">Submitted</div></a>
+                      {% endif %}
+                      
+                      
+                      
+                      
+                      
+                      
+                      
                     </td>
                     
                 </tr>
