@@ -4,14 +4,14 @@ from .import views
 
 urlpatterns = [
     re_path(r'^$', views.login, name="login"),
-    re_path(r'^home$', views.home, name='home'),
+    # re_path(r'^home$', views.home, name='home'),
     re_path(r'^devindex$', views.devindex, name='devindex'),
-    re_path(r'^devdashboard$', views.devdashboard, name='devdashboard'),
-    re_path(r'^devReportedissues$', views.devReportedissues, name='devReportedissues'),
-    re_path(r'^devreportissue$', views.devreportissue, name='devreportissue'),
-    re_path(r'^devreportedissue$', views.devreportedissue, name='devreportedissue'),
-    re_path(r'^devsuccess$', views.devsuccess, name='devsuccess'),
-    re_path(r'^devissues/(?P<id>\d+)/$', views.devissues, name='devissues'),
+    re_path(r'^devdashboard/$', views.devdashboard, name='devdashboard'),
+    re_path(r'^devReportedissues/$', views.devReportedissues, name='devReportedissues'),
+    re_path(r'^devreportissue/$', views.devreportissue, name='devreportissue'),
+    re_path(r'^devreportedissue/$', views.devreportedissue, name='devreportedissue'),
+    re_path(r'^devsuccess/$', views.devsuccess, name='devsuccess'),
+    re_path(r'^devissues/(?P<id>\d+)$', views.devissues, name='devissues'),
     
 
 
@@ -88,6 +88,7 @@ urlpatterns = [
 
 
     #amal#bibin#rohit#abin
+    
     re_path(r'^manindex$', views.manindex, name='manindex'),
     re_path(r'^projectmanEmp$', views.projectmanEmp, name='projectmanEmp'),
     re_path(r'^projectmanDev$', views.projectmanDev, name='projectmanDev'),
@@ -128,6 +129,8 @@ urlpatterns = [
     re_path(r'^projectmanager_completetl$', views.projectmanager_completetl, name='projectmanager_completetl'),
     re_path(r'^projectmanager_tlreported$', views.projectmanager_tlreported, name='projectmanager_tlreported'), 
     re_path(r'^projectreply/(?P<id>\d+)/$', views.projectreply, name='projectreply'), 
+    re_path(r'^logout$', views.logout, name='logout'),
+    re_path(r'^prlogout$', views.prlogout, name='prlogout'),
 
 
 ]

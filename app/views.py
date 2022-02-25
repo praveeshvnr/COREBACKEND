@@ -4,106 +4,182 @@ from .models import *
 from datetime import datetime
 
 # Create your views here.
+
 def login(request):
+    if request.method =='POST':
+        
+        design=designation.objects.get(designation="TL")
+        if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password'],designation=design).exists():
+            member=user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
+            request.session['tlid'] = member.id
+            if request.session.has_key('tlid'):
+                tlid = request.session['tlid']
+            else:
+                variable = "dummy"
+            mem = user_registration.objects.filter(id=tlid)
+            return render(request, 'TLdashboard.html', {'mem':mem})
+        des = designation.objects.get(designation='Developer')
+        if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password'], designation=des).exists():
+            dev = user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
+            request.session['devid'] = dev.id
+            if request.session.has_key('devid'):
+                devid = request.session['devid']
+            else:
+                variable = "dummy"
+            dev = user_registration.objects.filter(id=devid)
+            return render(request, 'devdashboard.html', {'dev': dev})
+        design1=designation.objects.get(designation="project manager")
+        if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password'],designation=design1).exists():
+            member=user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
+            request.session['prid'] = member.id
+            if request.session.has_key('prid'):
+                prid = request.session['prid']
+            else:
+                variable = "dummy"
+            pro = user_registration.objects.filter(id=prid)
+            return render(request, 'pmanager_dash.html', {'pro':pro})
+        else:
+            context={'msg':'Invalid uname or password'}
+            return render(request,'login.html',context)
     return render(request, 'login.html')
 
-def home(request):
-    if request.method == 'POST':
-        if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
-            dev = user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
+
+# def home(request):
+#     if request.method == 'POST':
+#         var=designation.objects.get(designation='developer')
+#         if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
+#             dev = user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
            
-            request.session['devfn'] = dev.fullname
-            request.session['devid'] = dev.id
-            request.session['desid'] = dev.designation_id
+#             request.session['devfn'] = dev.fullname
+#             request.session['devid'] = dev.id
+#             request.session['desid'] = dev.designation_id
             
-            return render(request, 'DEVsec.html', {'dev': dev})
-        else:
-            context = {'msg': 'Invalid uname or password'}
-            return render(request, 'login.html', context)
+#             return render(request, 'DEVsec.html', {'dev': dev})
+
+#         var=designation.objects.get(designation='projectmanager')
+#         if user_registration.objects.filter(email=request.POST['email'], password=request.POST['password']).exists():
+#             vars = user_registration.objects.get(email=request.POST['email'], password=request.POST['password'])
+           
+#             request.session['pmfn'] = vars.fullname
+#             request.session['pmid'] = vars.id
+#             request.session['pmsid'] = vars.designation_id
+            
+#             return render(request, 'PRsec.html', {'vars': vars})
+#         else:
+#             context = {'msg': 'Invalid uname or password'}
+#             return render(request, 'login.html', context)
+        
 
 
 def devindex(request):
-    return render(request,'devindex.html')
+    if 'devid' in request.session:
+        if request.session.has_key('devid'):
+            devid = request.session['devid']
+        dev = user_registration.objects.filter(id=devid)
+        return render(request,'devindex.html',{'dev':dev})
+    else:
+        return redirect('/')
 
 def devdashboard(request):
-    if request.session.has_key('devdes'):
-        devdes = request.session['devdes']
-    if request.session.has_key('devdep'):
-        devdep = request.session['devdep']
-    if request.session.has_key('devfn'):
-        devfn = request.session['devfn']
+    if 'devid' in request.session:
+        if request.session.has_key('devdes'):
+            devdes = request.session['devdes']
+        if request.session.has_key('devdep'):
+            devdep = request.session['devdep']
+        if request.session.has_key('devfn'):
+            devfn = request.session['devfn']
+        else:
+            variable = "dummy"
+        dev = user_registration.objects.filter(fullname=devfn)
+        return render(request,'devdashboard.html', {'dev': dev})
     else:
-        variable = "dummy"
-    dev = user_registration.objects.filter(fullname=devfn)
-    return render(request,'devdashboard.html', {'dev': dev})
+        return redirect('/')
 
 def devReportedissues(request):
-        
+    if 'devid' in request.session:    
         return render(request,'devReportedissues.html')
-
+    else:
+        return redirect('/')
 def devreportissue(request):
+    if 'devid' in request.session:
         
         return render(request,'devreportissue.html')
+    else:
+        return redirect('/')
 
 def devreportedissue(request):
+    if 'devid' in request.session:
+        if request.session.has_key('devid'):
+            devid = request.session['devid']
     
-    if request.session.has_key('devid'):
-        devid = request.session['devid']
-   
+        else:
+            variable = "dummy"
+        
+        var=reported_issue.objects.filter(reporter_id=devid)
+        # vars=user_registration.objects.filter(fullname=devfn)
+        
+        return render(request,'devreportedissue.html',{'var':var})
     else:
-        variable = "dummy"
-    
-    var=reported_issue.objects.filter(reporter_id=devid)
-    # vars=user_registration.objects.filter(fullname=devfn)
-    
-    return render(request,'devreportedissue.html',{'var':var})
-
+        return redirect('/')
 
 
 def devsuccess(request):
-    if request.session.has_key('devid'):
-        devid = request.session['devid']
-    
-    mem = user_registration.objects.filter(id=devid)
-    
-    
-    
-    
-    if request.method == 'POST':
+    if 'devid' in request.session:
+        if request.session.has_key('devid'):
+            devid = request.session['devid']
         
-        vars = reported_issue()
-        vars.issue=request.POST.get('reportissue')
-        vars.reported_date=datetime.now()
-        vars.reported_to_id=1
-        vars.reporter_id=devid
-        vars.status='pending'
-        vars.save()
-    return render(request,'devsuccess.html',{'mem':mem})
+        mem = user_registration.objects.filter(id=devid)
+        
+        
+        
+        
+        if request.method == 'POST':
+            
+            vars = reported_issue()
+            vars.issue=request.POST.get('reportissue')
+            vars.reported_date=datetime.now()
+            vars.reported_to_id=1
+            vars.reporter_id=devid
+            vars.status='pending'
+            vars.save()
+        return render(request,'devsuccess.html',{'mem':mem})
+    else:
+        return redirect('/')
 
 
 def devissues(request,id):
-    if request.session.has_key('devid'):
-        devid = request.session['devid']
-    rid=request.GET.get('rid')
-    var=reported_issue.objects.filter(id=id)
-    # mem = user_registration.objects.filter(id=devid)
+    if 'devid' in request.session:
+        if request.session.has_key('devid'):
+            devid = request.session['devid']
+        rid=request.GET.get('rid')
+        var=reported_issue.objects.filter(id=id)
+        # mem = user_registration.objects.filter(id=devid)
 
-    return render(request, 'devissues.html',{'var':var})
-
+        return render(request, 'devissues.html',{'var':var})
+    else:
+        return redirect('/')
 
 
 
 def devsample(request):
-    return render(request,'devsample.html')
+    if 'devid' in request.session:
+        return render(request,'devsample.html')
 
-
+    else:
+        return redirect('/')
 #*********************praveesh*********************
 
 
 def Devapplyleav(request):
-    return render(request,'Devapplyleav.html')
+    if 'devid' in request.session:
+        return render(request,'Devapplyleav.html')
+    else:
+        return redirect('/')
 def Devapplyleav1(request):
-    return render(request,'Devapplyleav1.html')
+    if 'devid' in request.session:
+        return render(request,'Devapplyleav1.html')
+    else:
+        return redirect('/')
 def Devapplyleav2(request):
     return render(request,'Devapplyleav2.html')
 def Devleaverequiest(request):
@@ -217,13 +293,25 @@ def TLsuccess(request):
 
 # project manager module
 def promanagerindex(request):
-    return render(request, 'promanagerindex.html')
-
+    if 'prid' in request.session:
+        if request.session.has_key('prid'):
+            prid = request.session['prid']
+        dev = user_registration.objects.filter(id=prid)
+        return render(request,'promanagerindex.html',{'dev':dev})
+        
+    else:
+        return redirect('/')
 def pmanager_dash(request):
-    return render(request, 'pmanager_dash.html')
+    if 'prid' in request.session:
+        return render(request, 'pmanager_dash.html')
+    else:
+        return redirect('/')
 
 def projectmanager_projects(request):
-    return render(request, 'projectmanager_projects.html')
+    if 'prid' in request.session:
+        return render(request, 'projectmanager_projects.html')
+    else:
+        return redirect('/')
 
 #nirmal
 def projectmanager_assignproject(request):
@@ -285,57 +373,67 @@ def projectMANreportedissues(request):
     return render(request, 'projectMANreportedissues.html')
 
 def projectMANreportedissue(request):
-    if request.session.has_key('devdes'):
-        devdes = request.session['devdes']
-    if request.session.has_key('devdep'):
-        devdep = request.session['devdep']
-    if request.session.has_key('devid'):
-        devid = request.session['devid']
+    if 'prid' in request.session:
+        if request.session.has_key('devdes'):
+            devdes = request.session['devdes']
+        if request.session.has_key('devdep'):
+            devdep = request.session['devdep']
+        if request.session.has_key('prid'):
+            prid = request.session['prid']
+        else:
+            variable = "dummy"
+        var=reported_issue.objects.filter(reporter=prid)
+    
+        return render(request, 'projectMANreportedissue.html',{'var':var})
     else:
-        variable = "dummy"
-    var=reported_issue.objects.filter(reporter=devid)
-   
-    return render(request, 'projectMANreportedissue.html',{'var':var})
+        return redirect('/')
 
 def projectMANreportissue(request):
-    return render(request, 'projectMANreportissue.html')
+    if 'prid' in request.session:
+        return render(request, 'projectMANreportissue.html')
+    else:
+        return redirect('/')
 
 def projectmanagerreportedissue2(request,id):
-     if request.session.has_key('devid'):
-        devid = request.session['devid']
-     rid=request.GET.get('rid')
-     var=reported_issue.objects.filter(id=id)
-     
-     return render(request, 'projectmanagerreportedissue2.html',{'var':var})
-
+    if 'prid' in request.session:
+        if request.session.has_key('prid'):
+            prid = request.session['prid']
+        rid=request.GET.get('rid')
+        var=reported_issue.objects.filter(id=id)
+        
+        return render(request, 'projectmanagerreportedissue2.html',{'var':var})
+    else:
+        return redirect('/')
 def projectmanagerreportedissue3(request,id):
-     if request.session.has_key('devid'):
-        devid = request.session['devid']
-     rid=request.GET.get('rid')
-     var=reported_issue.objects.filter(id=id)
-    
-     return render(request, 'projectmanagerreportedissue2.html',{'var':var})
+    if 'prid' in request.session:
+        if request.session.has_key('prid'):
+            prid = request.session['prid']
+        rid=request.GET.get('rid')
+        var=reported_issue.objects.filter(id=id)
+        
+        return render(request, 'projectmanagerreportedissue2.html',{'var':var})
+    else:
+        return redirect('/')
 
 
 def MANreportsuccess(request):
-    if request.session.has_key('devid'):
-        devid = request.session['devid']
-    
-    mem = user_registration.objects.filter(id=devid)
-    
-    
-    
-    
-    if request.method == 'POST':
+    if 'prid' in request.session:
+        if request.session.has_key('prid'):
+            prid = request.session['prid']
         
-        vars = reported_issue()
-        vars.issue=request.POST.get('MANreportissue')
-        vars.reported_date=datetime.now()
-        vars.reported_to_id=1
-        vars.reporter_id=devid
-        vars.status='pending'
-        vars.save()
-    return render(request, 'MANreportsuccess.html',{'mem':mem})
+        mem = user_registration.objects.filter(id=prid)
+        if request.method == 'POST':
+            
+            vars = reported_issue()
+            vars.issue=request.POST.get('MANreportissue')
+            vars.reported_date=datetime.now()
+            vars.reported_to_id=1
+            vars.reporter_id=prid
+            vars.status='pending'
+            vars.save()
+        return render(request, 'MANreportsuccess.html',{'mem':mem})
+    else:
+        return redirect('/')
 
 def projectMANleave(request):
     return render(request, 'projectMANleave.html')
@@ -390,28 +488,48 @@ def projectmanager_completetl(request):
     return render(request, 'projectmanager_completetl.html')
 
 def projectmanager_tlreported(request):
-    if request.session.has_key('devid'):
-        devid = request.session['devid']
-   
-    else:
-        variable = "dummy"
+    if 'prid' in request.session:
+        if request.session.has_key('prid'):
+            prid = request.session['prid']
     
-    var=reported_issue.objects.filter(reported_to_id=devid)
-    # vars=user_registration.objects.filter(designation_id=2).filter(id=devid)
-    return render(request, 'projectmanager_tlreported.html',{'var':var})
-
+        else:
+            variable = "dummy"
+        
+        var=reported_issue.objects.filter(reported_to_id=prid)
+        # vars=user_registration.objects.filter(designation_id=2).filter(id=devid)
+        return render(request, 'projectmanager_tlreported.html',{'var':var})
+    else:
+        return redirect('/')
 
 
 def projectreply(request,id):
-    if request.session.has_key('devid'):
-        devid = request.session['devid']
+    if 'prid' in request.session:
+        if request.session.has_key('prid'):
+            prid = request.session['prid']
+        
+        if request.method == 'POST':
+            
+            vars = reported_issue.objects.get(id=id)
+            vars.reply=request.POST.get('reply')
+        
+        
+            
+            vars.save()
+        return redirect('projectmanager_tlreported')
+    else:
+        return redirect('/')
+
+
+def logout(request):
+    if 'devid' in request.session:
+        request.session.flush()
+        return redirect('/')
+    else:
+        return redirect('/')
+def prlogout(request):
+    if 'prid' in request.session:
+        request.session.flush()
+        return redirect('/')
+    else:
+        return redirect('/')
     
-    if request.method == 'POST':
-        
-        vars = reported_issue.objects.get(id=id)
-        vars.reply=request.POST.get('reply')
-       
-       
-        
-        vars.save()
-    return redirect('projectmanager_tlreported')

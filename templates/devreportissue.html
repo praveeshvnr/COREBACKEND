@@ -46,7 +46,7 @@
 
         <div class="card " >
             <div class="card-body">
-                <form action="devsuccess" method='post'>
+                <form action="{% url 'devsuccess'  %}" method='post'>
                     {% csrf_token %}
                     <h4 class="card-title1">Describe your Issue</h4>
                     <textarea class="form-control" id="exampleTextarea1" name="reportissue" rows="4"></textarea>
